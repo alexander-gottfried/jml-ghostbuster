@@ -101,7 +101,7 @@ public class GrammarToMu
 	static Mu.Expr oneTerm(final Grammar.Rule term)
 	{
 		Mu.Expr result;
-		if (term.nextRule() > -1)
+		if (!term.isTerminal())
 			result = Mu.concatenation(
 					Mu.terminal(term.method()),
 					Mu.recvar(term.nextRule()));

@@ -40,7 +40,7 @@ public class Method {
 			return t;
 		}
 
-		public Method getTerminal(String name) {
+		public Method getMethod(String name) {
 			return indeces.get(name);
 		}
 
