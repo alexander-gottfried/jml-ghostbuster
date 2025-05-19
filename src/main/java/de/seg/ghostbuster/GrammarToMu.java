@@ -14,6 +14,10 @@ import de.seg.ghostbuster.mu.*;
 
 public class GrammarToMu
 {
+	public static Mu.Expr translate(final Grammar grammar) {
+		Mu.Expr result = _translate(grammar);
+		return _nonOccurringRemoved(result);
+	}
 
 	/**
 	 * https://www.cs.ru.nl/bachelors-theses/2018/Bart_Gruppen___4465784___From_mu-regular_expressions_to_CFGs_and_back.pdf
@@ -25,7 +29,7 @@ public class GrammarToMu
 	 * @param grammar the grammar
 	 * @return an equivalent μ-expression
 	 */
-	public static Mu.Expr translate(final Grammar grammar)
+	static Mu.Expr _translate(final Grammar grammar)
 	{
 		// "Start with the expression as the starting symbol S." (above link)
 		Mu.Expr result = Mu.recvar(grammar.startingRule);
@@ -63,12 +67,18 @@ public class GrammarToMu
 			freeVarCollector.reset();
 		}
 
-		// The above algorithm sometimes leaves terms μS.body where body doesn't
-		// contain references to S. This transformer removes these fixpoint ops.
-		NonOccuringIdRemover nonOccuringIdRemover = new NonOccuringIdRemover();
-		result = result.apply(nonOccuringIdRemover);
-
 		return result;
+	}
+
+	/**
+	 * Remove fixpoint expressions whose variable doesn't occur.
+	 *
+	 * The above algorithm sometimes leaves terms μS.body where body doesn't
+	 * contain references to S. This transformer removes these fixpoint ops.
+	 */
+	static Mu.Expr _nonOccurringRemoved(Mu.Expr e) {
+		NonOccuringIdRemover nonOccuringIdRemover = new NonOccuringIdRemover();
+		return e.apply(nonOccuringIdRemover);
 	}
 
 	/**

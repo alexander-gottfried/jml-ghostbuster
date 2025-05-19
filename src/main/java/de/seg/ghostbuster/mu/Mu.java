@@ -111,7 +111,7 @@ public class Mu
 		}
 
 		public String toString() {
-			return "%s%s".formatted(
+			return "%s %s".formatted(
 					this.left.toString(true),
 					this.right.toString(true));
 		}
@@ -142,7 +142,7 @@ public class Mu
 		}
 
 		public String toString() {
-			return "%s+%s".formatted(this.left, this.right);
+			return "%s + %s".formatted(this.left, this.right);
 		}
 
 		public void accept(MuVisitor v) {

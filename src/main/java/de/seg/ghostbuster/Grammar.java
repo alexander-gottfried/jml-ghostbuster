@@ -20,7 +20,7 @@ public class Grammar {
 		private static String str(Rule rule) {
 			String result = "'%s'".formatted(rule.method.toString());
 			if (!rule.isTerminal())
-				result += rule.nextRule;
+				result += " %d".formatted(rule.nextRule);
 			return result;
 		}
 
@@ -49,7 +49,7 @@ public class Grammar {
 	{
 		StringBuilder sb = new StringBuilder();
 
-		sb.append("S -> %d\n".formatted(this.startingRule));
+		sb.append("S -> %d".formatted(this.startingRule));
 
 		for (var entry : this.rules.entrySet()) {
 			int name = entry.getKey();
@@ -57,10 +57,10 @@ public class Grammar {
 				.map(Rule::str)
 				.collect(Collectors.toList());
 
-			sb.append(name)
+			sb.append('\n')
+				.append(name)
 				.append(" -> ")
-				.append(String.join(" | ", ruleIter))
-				.append('\n');
+				.append(String.join(" | ", ruleIter));
 		}
 		return sb.toString();
 	}
